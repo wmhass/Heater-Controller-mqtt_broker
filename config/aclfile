@@ -1,1 +1,9 @@
-pattern readwrite hello/%u
+pattern write stat/%c/#
+pattern write tele/%c/#
+pattern write cmnd/#
+pattern read cmnd/%c/#
+pattern read stat/#
+pattern read tele/#
+
+user debug_^%g^&fqief)n34fuU&
+topic readwrite #
