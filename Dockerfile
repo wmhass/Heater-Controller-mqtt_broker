@@ -45,4 +45,5 @@ RUN chmod +x /run.sh
 RUN echo hello
 
 ENTRYPOINT ["/run.sh"]
+
 CMD ["mosquitto"]
