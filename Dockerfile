@@ -39,11 +39,11 @@ VOLUME ["/var/lib/mosquitto"]
 EXPOSE 1883 8883
 
 ADD ./config/mosquitto.conf /etc/mosquitto/config/mosquitto.conf
-ADD ./run.sh /run.sh
-RUN chmod +x /run.sh
+ADD ./entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 RUN echo hello
 
-ENTRYPOINT ["/run.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 
 CMD ["mosquitto"]
