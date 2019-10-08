@@ -1,8 +1,6 @@
 #!/bin/sh
 set -e
 
-
-
 chown mosquitto:mosquitto -R /var/lib/mosquitto
 mkdir /log
 touch /log/mosquitto.log
