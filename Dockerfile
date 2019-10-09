@@ -45,7 +45,7 @@ RUN \
 
 VOLUME ["/var/lib/mosquitto"]
 
-EXPOSE 1883 9001
+EXPOSE 1883 9001 8883
 
 ADD ./config/mosquitto.conf /etc/mosquitto/config/mosquitto.conf
 ADD ./entrypoint.sh /entrypoint.sh
