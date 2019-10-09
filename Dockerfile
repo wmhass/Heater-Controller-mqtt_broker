@@ -6,13 +6,21 @@ RUN \
         set -x; \
         apt-get update && apt-get install -y --no-install-recommends \
                 libc-ares-dev git libmysqlclient-dev libssl-dev uuid uuid-dev build-essential wget  ca-certificates \
-                curl libcurl4-openssl-dev  libc-ares2 libcurl3 postgresql libpq-dev netcat\
+                curl libcurl4-openssl-dev  libc-ares2 libcurl3 postgresql libpq-dev netcat cmake\
+        && cd / \
+        && git clone https://github.com/warmcat/libwebsockets\
+        && cd libwebsockets\
+        && mkdir build\
+        && cd build\
+        && cmake ..\
+        && make && make install\
+        && ldconfig\
         && cd /tmp \
         && wget http://mosquitto.org/files/source/mosquitto-$MOSQUITTO_VERSION.tar.gz -O mosquitto.tar.gz \
         && wget http://mosquitto.org/files/source/mosquitto-$MOSQUITTO_VERSION.tar.gz.asc -O mosquitto.tar.gz.asc \
         && mkdir mosquitto-src && tar xfz mosquitto.tar.gz --strip-components=1 -C mosquitto-src \
         && cd mosquitto-src \
-        && make WITH_SRV=yes WITH_MEMORY_TRACKING=no \
+        && make WITH_SRV=yes WITH_MEMORY_TRACKING=no WITH_WEBSOCKETS=yes \
         && make install && ldconfig \
         && git clone https://github.com/jpmens/mosquitto-auth-plug.git \
         && cd mosquitto-auth-plug \
@@ -36,7 +44,7 @@ RUN \
 
 VOLUME ["/var/lib/mosquitto"]
 
-EXPOSE 1883 8883
+EXPOSE 1883 8883 9001
 
 ADD ./config/mosquitto.conf /etc/mosquitto/config/mosquitto.conf
 ADD ./entrypoint.sh /entrypoint.sh
