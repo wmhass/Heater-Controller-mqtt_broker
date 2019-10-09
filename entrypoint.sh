@@ -20,6 +20,12 @@ chown mosquitto:mosquitto -R /log/mosquitto.log
 # sed -i 's/'"$OPT_DB_USER"'/' /etc/mosquitto/config/mosquitto.conf
 # sed -i 's/'"$OPT_DB_PASS"'/' /etc/mosquitto/config/mosquitto.conf
 
+echo "Waiting for access control api"
+while ! nc -z mqtt_access_control_api 8001; do
+  sleep 0.1
+done
+echo "access control api started"
+
 # Wait for Postgres to be online before start the mosquitto
 # echo "Waiting for postgres..."
 # while ! nc -z $SQL_HOST $SQL_PORT; do
