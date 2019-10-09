@@ -28,12 +28,12 @@ chown mosquitto:mosquitto -R /log/mosquitto.log
 # echo "PostgreSQL started"
 
 # Start Mosquitto
-if [ "$1" = 'mosquitto' ]; then
-        exec /usr/local/sbin/mosquitto -c /etc/mosquitto/config/mosquitto.conf
-fi
-
-if [ "$1" = 'mosquittoverbose' ]; then
-        exec /usr/local/sbin/mosquitto -v -c /etc/mosquitto/config/mosquitto.conf
-fi
+# if [ "$1" = 'mosquitto' ]; then
+#         exec /usr/local/sbin/mosquitto -c /etc/mosquitto/config/mosquitto.conf
+# fi
+#
+# if [ "$1" = 'mosquittoverbose' ]; then
+#         exec /usr/local/sbin/mosquitto -v -c /etc/mosquitto/config/mosquitto.conf
+# fi
 
 exec "$@"

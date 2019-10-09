@@ -1,6 +1,7 @@
 FROM debian:jessie
 
-ENV MOSQUITTO_VERSION=1.4.14
+ENV MOSQUITTO_VERSION=1.5.1
+ENV LIBWEBSOCKET_BRANCH=v2.0.0
 
 RUN \
         set -x; \
@@ -8,7 +9,7 @@ RUN \
                 libc-ares-dev git libmysqlclient-dev libssl-dev uuid uuid-dev build-essential wget  ca-certificates \
                 curl libcurl4-openssl-dev  libc-ares2 libcurl3 postgresql libpq-dev netcat cmake\
         && cd / \
-        && git clone https://github.com/warmcat/libwebsockets\
+        && git clone -b $LIBWEBSOCKET_BRANCH --single-branch https://github.com/warmcat/libwebsockets\
         && cd libwebsockets\
         && mkdir build\
         && cd build\
@@ -44,14 +45,15 @@ RUN \
 
 VOLUME ["/var/lib/mosquitto"]
 
-EXPOSE 1883 8883 9001
+EXPOSE 1883 9001
 
 ADD ./config/mosquitto.conf /etc/mosquitto/config/mosquitto.conf
 ADD ./entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-RUN echo hello
+RUN echo hello__
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["mosquitto"]
+
+CMD ["/usr/local/sbin/mosquitto", "-c", "/etc/mosquitto/config/mosquitto.conf"]
