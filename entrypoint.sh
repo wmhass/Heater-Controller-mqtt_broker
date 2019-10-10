@@ -20,7 +20,4 @@ while ! nc -z $MQTT_ACCESS_CONTROL_API_HOST $MQTT_ACCESS_CONTROL_API_PORT; do
 done
 echo "MQTT Broker: Access Control API is Up"
 
-# Start Mosquitto
-exec /usr/local/sbin/mosquitto -c /etc/mosquitto/config/mosquitto.conf
-
 exec "$@"

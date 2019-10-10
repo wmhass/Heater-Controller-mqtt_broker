@@ -56,4 +56,4 @@ RUN echo hello__
 ENTRYPOINT ["/entrypoint.sh"]
 
 
-CMD ["mosquitto"]
+CMD ["mosquitto", "-c", "/etc/mosquitto/config/mosquitto.conf"]
