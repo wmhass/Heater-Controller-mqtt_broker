@@ -8,38 +8,19 @@ chmod o+w /log/mosquitto.log
 chown mosquitto:mosquitto -R /log/mosquitto.log
 
 # Replace HOST and PORT in the configuration file
-# OPT_HOST="auth_opt_host .*$/auth_opt_host $SQL_HOST"
-# OPT_PORT="auth_opt_port .*$/auth_opt_port $SQL_PORT"
-# OPT_DBNAME="auth_opt_dbname .*$/auth_opt_dbname $SQL_DATABASE"
-# OPT_DB_USER="auth_opt_user .*$/auth_opt_user $SQL_USER"
-# OPT_DB_PASS="auth_opt_pass .*$/auth_opt_pass $SQL_PASSWORD"
-#
-# sed -i 's/'"$OPT_HOST"'/' /etc/mosquitto/config/mosquitto.conf
-# sed -i 's/'"$OPT_PORT"'/' /etc/mosquitto/config/mosquitto.conf
-# sed -i 's/'"$OPT_DBNAME"'/' /etc/mosquitto/config/mosquitto.conf
-# sed -i 's/'"$OPT_DB_USER"'/' /etc/mosquitto/config/mosquitto.conf
-# sed -i 's/'"$OPT_DB_PASS"'/' /etc/mosquitto/config/mosquitto.conf
+OPT_HOST="auth_opt_http_ip .*$/auth_opt_http_ip $MQTT_ACCESS_CONTROL_API_HOST"
+OPT_PORT="auth_opt_http_port .*$/auth_opt_http_port $MQTT_ACCESS_CONTROL_API_PORT"
 
-echo "Waiting for access control api"
-while ! nc -z mqtt_access_control_api 8001; do
+sed -i 's/'"$OPT_HOST"'/' /etc/mosquitto/config/mosquitto.conf
+sed -i 's/'"$OPT_PORT"'/' /etc/mosquitto/config/mosquitto.conf
+
+echo "MQTT Broker: Waiting for Access Control API"
+while ! nc -z $MQTT_ACCESS_CONTROL_API_HOST $MQTT_ACCESS_CONTROL_API_PORT; do
   sleep 0.1
 done
-echo "access control api started"
-
-# Wait for Postgres to be online before start the mosquitto
-# echo "Waiting for postgres..."
-# while ! nc -z $SQL_HOST $SQL_PORT; do
-#   sleep 0.1
-# done
-# echo "PostgreSQL started"
+echo "MQTT Broker: Access Control API is Up"
 
 # Start Mosquitto
-# if [ "$1" = 'mosquitto' ]; then
-#         exec /usr/local/sbin/mosquitto -c /etc/mosquitto/config/mosquitto.conf
-# fi
-#
-# if [ "$1" = 'mosquittoverbose' ]; then
-#         exec /usr/local/sbin/mosquitto -v -c /etc/mosquitto/config/mosquitto.conf
-# fi
+exec /usr/local/sbin/mosquitto -c /etc/mosquitto/config/mosquitto.conf
 
 exec "$@"
