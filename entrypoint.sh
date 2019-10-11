@@ -2,10 +2,14 @@
 set -e
 
 chown mosquitto:mosquitto -R /var/lib/mosquitto
-mkdir /log
-touch /log/mosquitto.log
-chmod o+w /log/mosquitto.log
-chown mosquitto:mosquitto -R /log/mosquitto.log
+
+if [ ! -d /log ]; then
+  mkdir /log
+  touch /log/mosquitto.log
+  chmod o+w /log/mosquitto.log
+  chown mosquitto:mosquitto -R /log/mosquitto.log
+fi
+
 
 # Replace HOST and PORT in the configuration file
 OPT_HOST="auth_opt_http_ip .*$/auth_opt_http_ip $MQTT_ACCESS_CONTROL_API_HOST"
