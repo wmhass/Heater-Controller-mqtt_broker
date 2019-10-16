@@ -49,6 +49,8 @@ EXPOSE 1883 9001 8883
 
 ADD ./config/mosquitto.conf /etc/mosquitto/config/mosquitto.conf
 COPY ./entrypoint.sh /entrypoint.sh
+
+RUN chmod 777 /etc/mosquitto/config/mosquitto.conf
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
